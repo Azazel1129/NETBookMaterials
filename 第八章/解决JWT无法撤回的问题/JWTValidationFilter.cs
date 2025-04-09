@@ -38,6 +38,8 @@ public class JWTValidationFilter : IAsyncActionFilter
             context.Result = result;
             return;
         }
+        //请求到达时，JWT中间件自动解析Authorization头中的token验证签名、有效期等将token中的claims转换为ClaimsPrincipal 验证成功后，中间件将ClaimsPrincipal对象赋给HttpContext.User
+        //通过jwt的user这时候才能正常的访问这个参数。
         var claimVersion = context.HttpContext.User.FindFirst(ClaimTypes.Version);
         //jwt中保存的版本号
         long jwtVerOfReq = long.Parse(claimVersion!.Value);
